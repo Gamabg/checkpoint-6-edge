@@ -42,30 +42,8 @@ Os dados capturados pelos sensores são enviados via MQTT para o servidor, que r
 
 <h2>🧩 Arquitetura do Sistema</h2>
 
-┌──────────────┐ Wi-Fi ┌─────────────┐
-│ Sensores │ ─────────────────▶ │ ESP32 │
-│ DHT11 / LDR │ │ Publica no │
-└──────────────┘ │ Broker MQTT│
-└─────────────┘
-│
-MQTT (paho-mqtt)
-│
-┌─────────────┐
-│ Flask + │
-│ Socket.IO │
-└─────────────┘
-│
-WebSocket (tempo real)
-│
-┌─────────────┐
-│ Dashboard │
-│ (HTML/JS) │
-└─────────────┘
+<img width="431" height="417" alt="image" src="https://github.com/user-attachments/assets/b545c3b2-ac6a-42dc-b497-4817ef257e35" />
 
-yaml
-Copiar código
-
----
 
 <h2>⚙️ Tecnologias Utilizadas</h2>
 
