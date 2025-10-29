@@ -111,7 +111,7 @@ client.publish("/TEF/device001/attrs/luz", String(luminosidade).c_str());
 Abra o navegador e veja as leituras em tempo real!
 🌡️ Temperatura 💧 Umidade 💡 Luminosidade 📊 Histórico e Distribuição
 
-<h2>📊 Interface Web</h2> <p align="center"> <img src="./ffe3d022-2931-4b45-8d2e-6ab01cec1129.png" width="85%" alt="Dashboard Monitor FIWARE ESP32"/> </p> <h3>Principais Componentes:</h3>
+<h2>📊 Interface Web</h2> <p align="center"> <img src="https://github.com/user-attachments/assets/0e767832-4659-4275-9933-cb2c8c2afc61" width="85%" alt="Dashboard Monitor FIWARE ESP32"/> </p> <h3>Principais Componentes:</h3>
 Cartões de métricas (temperatura, umidade, luminosidade, total de leituras)
 
 Gráfico de linha (histórico das últimas leituras)
