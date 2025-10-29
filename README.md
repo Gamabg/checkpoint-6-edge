@@ -1,139 +1,155 @@
-📡 Monitor FIWARE ESP32
+<h1 align="center">📡 Monitor FIWARE ESP32</h1>
 
-Projeto IoT com ESP32, MQTT, Flask e Socket.IO
+<p align="center">
+  <b>Projeto IoT com ESP32, MQTT, Flask e Socket.IO</b><br>
+  <i>Monitoramento em tempo real de temperatura, umidade e luminosidade</i>
+</p>
 
-🧠 Sobre o Projeto
+<p align="center">
+  <img src="./ffe3d022-2931-4b45-8d2e-6ab01cec1129.png" width="80%" alt="Dashboard do projeto"/>
+</p>
 
-Este projeto implementa um sistema IoT completo para monitoramento em tempo real de temperatura, umidade e luminosidade, utilizando um ESP32, o protocolo MQTT e uma interface web dinâmica desenvolvida com Flask e Chart.js.
+---
 
-Os dados captados pelos sensores são enviados para um broker MQTT e recebidos pelo servidor Python, que transmite as atualizações em tempo real para o navegador via Socket.IO, exibindo os valores e gráficos interativos.
+<h2>🧠 Sobre o Projeto</h2>
 
-👨‍💻 Integrantes
+Este projeto implementa um sistema IoT completo para monitorar em tempo real **temperatura, umidade e luminosidade**, utilizando o **ESP32**, o protocolo **MQTT** e uma interface web moderna feita com **Flask**, **Socket.IO** e **Chart.js**.
 
-Kauai Rosa
+Os dados capturados pelos sensores são enviados via MQTT para o servidor, que repassa tudo ao navegador em tempo real. O resultado é um **dashboard responsivo e dinâmico**, perfeito para aplicações de monitoramento IoT.
 
-Bruno Gama
+---
 
-Murilo Bastos
+<h2>👨‍💻 Integrantes</h2>
 
-Lucas Pedro
+<ul>
+  <li>Kauai Rosa</li>
+  <li>Bruno Gama</li>
+  <li>Murilo Bastos</li>
+  <li>Lucas Pedro</li>
+</ul>
 
-🎯 Objetivos
+---
 
-📶 Coletar dados de temperatura e umidade com o sensor DHT11.
+<h2>🎯 Objetivos</h2>
 
-💡 Medir a luminosidade com o sensor LDR.
+✅ Medir temperatura e umidade com o sensor <b>DHT11</b><br>
+✅ Medir luminosidade com o sensor <b>LDR</b><br>
+✅ Transmitir os dados via <b>MQTT</b><br>
+✅ Utilizar o <b>ESP32</b> para integração via Wi-Fi<br>
+✅ Visualizar tudo em tempo real via <b>Dashboard Web</b>
 
-☁️ Transmitir as leituras via MQTT, usando o MyMQTT ou outro cliente compatível.
+---
 
-🌐 Utilizar o ESP32 como nó principal, conectado ao Wi-Fi, publicando os dados periodicamente.
+<h2>🧩 Arquitetura do Sistema</h2>
 
-💻 Visualizar as informações em tempo real por meio de uma interface web interativa.
+┌──────────────┐ Wi-Fi ┌─────────────┐
+│ Sensores │ ─────────────────▶ │ ESP32 │
+│ DHT11 / LDR │ │ Publica no │
+└──────────────┘ │ Broker MQTT│
+└─────────────┘
+│
+MQTT (paho-mqtt)
+│
+┌─────────────┐
+│ Flask + │
+│ Socket.IO │
+└─────────────┘
+│
+WebSocket (tempo real)
+│
+┌─────────────┐
+│ Dashboard │
+│ (HTML/JS) │
+└─────────────┘
 
-🧩 Arquitetura do Sistema
-┌──────────────┐        Wi-Fi         ┌─────────────┐
-│   Sensores   │  ─────────────────▶  │    ESP32    │
-│ DHT11 / LDR  │                     │  Publica no │
-└──────────────┘                     │   Broker MQTT│
-                                     └─────────────┘
-                                             │
-                                   MQTT (paho-mqtt)
-                                             │
-                                     ┌─────────────┐
-                                     │   Flask +   │
-                                     │  Socket.IO  │
-                                     └─────────────┘
-                                             │
-                                     WebSocket (tempo real)
-                                             │
-                                     ┌─────────────┐
-                                     │  Dashboard  │
-                                     │   (HTML/JS) │
-                                     └─────────────┘
+yaml
+Copiar código
 
-⚙️ Tecnologias Utilizadas
-Camada	Tecnologia	Descrição
-Microcontrolador	ESP32	Captura e envia dados dos sensores via MQTT
-Sensores	DHT11 / LDR	Medem temperatura, umidade e luminosidade
-Protocolo	MQTT	Comunicação leve e rápida entre ESP32 e servidor
-Backend	Flask + Socket.IO + paho-mqtt	Recebe dados e envia em tempo real para o navegador
-Frontend	HTML + CSS + Chart.js	Exibe os dados e gráficos interativos
-Broker MQTT	FIWARE / MyMQTT / Mosquitto	Responsável por receber e distribuir as mensagens MQTT
-🧠 Estrutura de Arquivos
+---
+
+<h2>⚙️ Tecnologias Utilizadas</h2>
+
+| Camada | Tecnologia | Descrição |
+|--------|-------------|-----------|
+| Microcontrolador | **ESP32** | Captura e envia dados dos sensores |
+| Sensores | **DHT11** / **LDR** | Medem temperatura, umidade e luminosidade |
+| Protocolo | **MQTT** | Comunicação leve entre ESP32 e servidor |
+| Backend | **Flask + Socket.IO + paho-mqtt** | Recebe e envia dados em tempo real |
+| Frontend | **HTML + CSS + Chart.js** | Interface moderna e responsiva |
+| Broker | **FIWARE / MyMQTT / Mosquitto** | Responsável por distribuir as mensagens |
+
+---
+
+<h2>🧠 Estrutura de Arquivos</h2>
+
 📁 Projeto-Monitor-FIWARE-ESP32
-├── app.py                # Servidor Flask + Socket.IO + MQTT
-├── index.html            # Interface Web (Dashboard)
-├── requirements.txt      # Dependências Python
-└── README.md             # Documentação do projeto
+├── app.py # Servidor Flask + MQTT + Socket.IO
+├── index.html # Dashboard Web
+├── requirements.txt # Dependências Python
+└── README.md # Este arquivo
 
-🚀 Como Executar o Projeto
-🧩 1. Instalar Dependências
+yaml
+Copiar código
 
-No terminal, execute:
+---
 
+<h2>🚀 Como Executar o Projeto</h2>
+
+<h3>1️⃣ Instalar Dependências</h3>
+
+```bash
 pip install flask flask-socketio paho-mqtt eventlet
+<h3>2️⃣ Configurar o Broker MQTT</h3>
+Edite o arquivo app.py:
 
-⚙️ 2. Configurar o Broker MQTT
-
-No arquivo app.py, altere:
-
+python
+Copiar código
 MQTT_BROKER = "44.223.0.185"   # Endereço do seu broker
 MQTT_PORT = 1883
+💡 Caso o broker exija login:
 
-
-💡 Se o broker exigir autenticação, descomente a linha:
-
+python
+Copiar código
 client.username_pw_set("usuario", "senha")
-
-🧠 3. Executar o Servidor Flask
-
-Execute o comando:
-
+<h3>3️⃣ Executar o Servidor Flask</h3>
+bash
+Copiar código
 python app.py
-
-
-O servidor estará disponível em:
+O servidor estará disponível em:<br>
 👉 http://127.0.0.1:5000
 
-📲 4. Configurar o ESP32 (publicador)
+<h3>4️⃣ Configurar o ESP32</h3>
+No seu código (Arduino IDE):
 
-No código do ESP32, configure:
-
+cpp
+Copiar código
 const char* mqtt_server = "44.223.0.185";
 const int mqtt_port = 1883;
+
 client.publish("/TEF/device001/attrs/temp", String(temperatura).c_str());
 client.publish("/TEF/device001/attrs/umid", String(umidade).c_str());
 client.publish("/TEF/device001/attrs/luz", String(luminosidade).c_str());
+<h3>5️⃣ Visualizar o Dashboard</h3>
+Abra o navegador e veja as leituras em tempo real!
+🌡️ Temperatura 💧 Umidade 💡 Luminosidade 📊 Histórico e Distribuição
 
-🌐 5. Visualizar no Navegador
+<h2>📊 Interface Web</h2> <p align="center"> <img src="./ffe3d022-2931-4b45-8d2e-6ab01cec1129.png" width="85%" alt="Dashboard Monitor FIWARE ESP32"/> </p> <h3>Principais Componentes:</h3>
+Cartões de métricas (temperatura, umidade, luminosidade, total de leituras)
 
-Abra o dashboard e veja as leituras sendo atualizadas em tempo real:
+Gráfico de linha (histórico das últimas leituras)
 
-🌡️ Temperatura
+Gráfico de pizza (distribuição atual das medidas)
 
-💧 Umidade
-
-💡 Luminosidade
-
-📊 Histórico de leituras e gráfico de distribuição
-
-📊 Interface Web (Dashboard)
-
-O dashboard exibe os dados de forma clara e moderna, com:
-
-Cartões de indicadores (temperatura, umidade, luminosidade, total de leituras)
-
-Gráfico de linha (histórico das últimas 12 leituras)
-
-Gráfico de pizza (distribuição atual)
-
-🛠️ Possíveis Erros e Soluções
+<h2>🛠️ Possíveis Erros e Soluções</h2>
 Erro	Causa	Solução
-TimeoutError: timed out	Broker MQTT inacessível	Verifique IP, porta e conexão à internet
-OSError: [WinError 10048]	Porta 5000 já em uso	Feche a aba antiga ou mude a porta (port=5001)
-RuntimeError: Werkzeug web server...	Flask detecta uso em produção	Use allow_unsafe_werkzeug=True no socketio.run()
-Dashboard sem atualização	MQTT não está enviando dados	Verifique se o ESP32 está publicando nos tópicos corretos
-🧾 Exemplo de Log (Terminal)
+TimeoutError: timed out	Broker MQTT inacessível	Verifique IP e conexão
+OSError: [WinError 10048]	Porta 5000 em uso	Feche outra instância ou use port=5001
+RuntimeError: Werkzeug web server...	Flask em produção	Use allow_unsafe_werkzeug=True
+Dashboard não atualiza	MQTT sem dados	Verifique tópicos e publicações
+
+<h2>🧾 Exemplo de Log (Terminal)</h2>
+bash
+Copiar código
 [MQTT] Conectado. rc = 0
 [MQTT] Subscribed: /TEF/device001/attrs/temp
 [MQTT] Subscribed: /TEF/device001/attrs/umid
@@ -141,9 +157,4 @@ Dashboard sem atualização	MQTT não está enviando dados	Verifique se o ESP32 
 [MQTT] Mensagem em /TEF/device001/attrs/temp: 23.4
 [MQTT] Mensagem em /TEF/device001/attrs/umid: 58
 [MQTT] Mensagem em /TEF/device001/attrs/luz: 81
-
-❤️ Agradecimentos
-
-Projeto desenvolvido por ©Company 404
-Agradecemos sua atenção e interesse em recriar este projeto! 👋
-Sinta-se à vontade para expandir o sistema com novos sensores ou armazenar os dados em banco de dados.
+<h2>❤️ Agradecimentos</h2> <p align="center"> Projeto desenvolvido por <b>©Company 404</b><br> Agradecemos sua atenção e interesse em recriar este projeto! 👋<br> <i>Sinta-se à vontade para expandir o sistema com novos sensores e recursos.</i> </p> ```
