@@ -97,7 +97,7 @@ Copiar código
 
 <h3>1️⃣ Instalar Dependências</h3>
 
-```bash
+bash
 pip install flask flask-socketio paho-mqtt eventlet
 <h3>2️⃣ Configurar o Broker MQTT</h3>
 Edite o arquivo app.py:
@@ -157,4 +157,4 @@ Copiar código
 [MQTT] Mensagem em /TEF/device001/attrs/temp: 23.4
 [MQTT] Mensagem em /TEF/device001/attrs/umid: 58
 [MQTT] Mensagem em /TEF/device001/attrs/luz: 81
-<h2>❤️ Agradecimentos</h2> <p align="center"> Projeto desenvolvido por <b>©Company 404</b><br> Agradecemos sua atenção e interesse em recriar este projeto! 👋<br> <i>Sinta-se à vontade para expandir o sistema com novos sensores e recursos.</i> </p> ```
+<h2>❤️ Agradecimentos</h2> <p align="center"> Projeto desenvolvido por <b>©Company 404</b><br> Agradecemos sua atenção e interesse em recriar este projeto! 👋<br> <i>Sinta-se à vontade para expandir o sistema com novos sensores e recursos.</i> </p> 
