@@ -1,0 +1,25 @@
+{
+  "name": "checkpoint-6-edge",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">📡 Monitor FIWARE ESP32</h1>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gamabg/checkpoint-6-edge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Gamabg/checkpoint-6-edge/issues"
+  },
+  "homepage": "https://github.com/Gamabg/checkpoint-6-edge#readme",
+  "dependencies": {
+    "flask": "^0.2.10",
+    "socketio": "^1.0.0"
+  }
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Sensores IoT</title>
+
+    <!-- Bootstrap e Chart.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+        }
+
+        .dashboard {
+            padding: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h5 {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .card h2 {
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard container-fluid">
+        <h3 class="mb-4 fw-bold">📊 Dashboard de Sensores</h3>
+
+        <!-- Cards superiores -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h5>Temperatura</h5>
+                    <h2 id="temp">-- °C</h2>
+                    <canvas id="tempChart" height="60"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h5>Luz</h5>
+                    <h2 id="luz">-- %</h2>
+                    <canvas id="luzChart" height="60"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h5>Umidade</h5>
+                    <h2 id="umid">-- %</h2>
+                    <canvas id="umidChart" height="60"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h5>Resumo Geral</h5>
+                    <canvas id="resumoChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos principais -->
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h5 class="mb-3">Evolucao dos Sensores</h5>
+                    <div class="chart-container">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h5 class="mb-3">Distribuição dos Sensores</h5>
+                    <div class="chart-container">
+                        <canvas id="donutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Dashboard IoT - desenvolvido com Flask, MQTT e Chart.js</p>
+        </div>
+    </div>
+
+    <script>
+        const socket = io({ transports: ['websocket', 'polling'] });
+
+        // Dados históricos
+        let labels = [];
+        let tempData = [];
+        let luzData = [];
+        let umidData = [];
+
+        // Função utilitária para manter histórico limitado
+        function pushData(array, value, max = 15) {
+            array.push(value);
+            if (array.length > max) array.shift();
+        }
+
+        // Gráfico de linha principal
+        const lineChart = new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'Temperatura (°C)', data: tempData, borderColor: '#ff6b6b', tension: 0.3 },
+                    { label: 'Luz (%)', data: luzData, borderColor: '#f7c948', tension: 0.3 },
+                    { label: 'Umidade (%)', data: umidData, borderColor: '#4ecdc4', tension: 0.3 }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Mini-gráficos de barras nos cards
+        function createMiniChart(id, color) {
+            return new Chart(document.getElementById(id), {
+                type: 'bar',
+                data: { labels: Array(10).fill(""), datasets: [{ data: Array(10).fill(0), backgroundColor: color }] },
+                options: { plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            });
+        }
+
+        const tempChart = createMiniChart('tempChart', '#ff6b6b');
+        const luzChart = createMiniChart('luzChart', '#f7c948');
+        const umidChart = createMiniChart('umidChart', '#4ecdc4');
+
+        // Gráficos de resumo
+        const donutChart = new Chart(document.getElementById('donutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Temperatura', 'Luz', 'Umidade'],
+                datasets: [{ data: [0, 0, 0], backgroundColor: ['#ff6b6b', '#f7c948', '#4ecdc4'] }]
+            },
+            options: { cutout: '70%' }
+        });
+
+        const resumoChart = new Chart(document.getElementById('resumoChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Temp', 'Luz', 'Umid'],
+                datasets: [{ data: [0, 0, 0], backgroundColor: ['#ff6b6b', '#f7c948', '#4ecdc4'] }]
+            },
+            options: { cutout: '70%' }
+        });
+
+        // Recebe dados em tempo real
+        socket.on('novo_dado', (data) => {
+            const { temp, luz, umid } = data.dados || {};
+            const time = new Date().toLocaleTimeString();
+
+            // Atualiza valores
+            document.getElementById('temp').innerText = `${temp ?? "--"} °C`;
+            document.getElementById('luz').innerText = `${luz ?? "--"} %`;
+            document.getElementById('umid').innerText = `${umid ?? "--"} %`;
+
+            pushData(labels, time);
+            pushData(tempData, Number(temp) || 0);
+            pushData(luzData, Number(luz) || 0);
+            pushData(umidData, Number(umid) || 0);
+
+            // Atualiza gráficos
+            lineChart.update();
+
+            donutChart.data.datasets[0].data = [temp || 0, luz || 0, umid || 0];
+            donutChart.update();
+
+            resumoChart.data.datasets[0].data = [temp || 0, luz || 0, umid || 0];
+            resumoChart.update();
+
+            // Atualiza mini charts
+            const updateMini = (chart, val) => {
+                chart.data.datasets[0].data.push(val || 0);
+                if (chart.data.datasets[0].data.length > 10) chart.data.datasets[0].data.shift();
+                chart.update();
+            };
+            updateMini(tempChart, temp);
+            updateMini(luzChart, luz);
+            updateMini(umidChart, umid);
+        });
+    </script>
+</body>
+
+</html>
