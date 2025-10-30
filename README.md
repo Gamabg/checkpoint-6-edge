@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="./ffe3d022-2931-4b45-8d2e-6ab01cec1129.png" width="80%" alt="Dashboard do projeto"/>
+  <img src="https://github.com/user-attachments/assets/0e767832-4659-4275-9933-cb2c8c2afc61" width="80%" alt="Dashboard do projeto"/>
 </p>
 
 ---
